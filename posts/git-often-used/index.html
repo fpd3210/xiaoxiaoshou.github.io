@@ -1,0 +1,1805 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="renderer" content="webkit"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+<meta http-equiv="Cache-Control" content="no-transform"/>
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+<meta name="generator" content="Hugo 0.77.0 with theme icarus"/>
+<meta name="google-site-verification" content="Your googleVerification code"/>
+<meta name="baidu-site-verification" content="fLJoj3MEpkHW20ix"/>
+
+<meta name="author" content="pikachues"/>
+<meta name="description" content="1.什么版本控制系统 单独的讲版本控制我们或许不知道它是什么，但是举个我们生活中的小例子，我们很容易明白它是什么。 例如我们毕业修改无数遍的论文"/>
+<meta name="keywords" content=""/>
+
+<title>Git非官方使用总结 - eRunn&#39;s Blog</title>
+
+
+<meta name="application-name" content="eRunn&#39;s Blog" />
+<meta name="msapplication-TileImage" content="img/favicon.ico" />
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="eRunn&#39;s Blog" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/blog.dpf114.top\/posts\/git-often-used\/"
+    },
+    "headline": "eRunn\u0027s Blog",
+    "image": [],
+    "dataPublished": "2020-12-22T17:20:56\u002b08:00",
+    "dataModified": "2020-12-22T17:20:56\u002b08:00",
+    "author": {
+        "@type": "Person",
+        "name": "pikachues"
+    },
+    "description": "1.什么版本控制系统 单独的讲版本控制我们或许不知道它是什么，但是举个我们生活中的小例子，我们很容易明白它是什么。 例如我们毕业修改无数遍的论文"
+}
+</script>
+
+
+<link rel="canonical" href="https://blog.dpf114.top/posts/git-often-used/"/>
+<link rel="alternate" href="https://blog.dpf114.top/index.xml" title="eRunn&#39;s Blog" type="application/rss+xml"/>
+<link rel="icon" href="/img/favicon.ico"/>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-light.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source&#43;Code&#43;Pro"/>
+
+<link rel="stylesheet" href="/css/default.css"/>
+
+
+    
+    
+        
+        
+        
+        
+
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css"/>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css"/>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+
+
+
+</head>
+<body class="is-3-column">
+<nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand justify-content-center">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    eRunn&#39;s Blog
+                
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                
+                    <a class="navbar-item "
+                       href="/">主页</a>
+                
+                    <a class="navbar-item "
+                       href="/archives">归档</a>
+                
+                    <a class="navbar-item "
+                       href="/categories">分类</a>
+                
+                    <a class="navbar-item "
+                       href="/tags">标签</a>
+                
+                    <a class="navbar-item "
+                       href="/about">关于</a>
+                
+            </div>
+            <div class="navbar-end">
+                
+                    
+                        <a class="navbar-item" target="_blank" title="github" href="https://github.com/xiaoxiaoshou" rel="noopener">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    
+                
+                
+                    <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                        <i class="fas fa-list-ul"></i>
+                    </a>
+                
+                
+                    <a class="navbar-item search" title="搜索" href="javascript:;">
+                        <i class="fas fa-search"></i>
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen">
+                
+    <div class="card">
+    
+    <article class="card-content article" role="article">
+        
+            <div class="article-meta is-size-7 is-uppercase level is-mobile">
+                <div class="level-left">
+                    
+                        <span class="level-item">
+                            <time dateTime="2020-12-22T17:20:56&#43;08:00"
+                                  title="2020-12-22T17:20:56&#43;08:00">2020-12-22</time>发表
+                        </span>
+                    
+                    
+                        <span class="level-item">
+                            <time dateTime="2020-12-22T17:20:56&#43;08:00"
+                                  title="2020-12-22T17:20:56&#43;08:00">2020-12-22</time>更新
+                        </span>
+                    
+                    
+                    
+                        <span class="level-item">
+                            
+                            <a class="link-muted" href="/categories/Git">Git</a>
+                        </span>
+                    
+                    
+                        <span class="level-item">8 分钟读完 (大约3760个字)</span>
+                    
+                    
+                        <span class="level-item" id="busuanzi_container_page_pv">
+                            <span id="busuanzi_value_page_pv">0</span>次访问
+                        </span>
+                    
+                </div>
+            </div>
+        
+        <h1 class="title is-3 is-size-4-mobile">Git非官方使用总结</h1>
+        <div class="content"><h2 id="1什么版本控制系统">1.什么版本控制系统</h2>
+<p>单独的讲版本控制我们或许不知道它是什么，但是举个我们生活中的小例子，我们很容易明白它是什么。</p>
+<p>例如我们毕业修改无数遍的论文：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">毕业论文最终版</span>
+<span class="n">毕业论文最最终版</span>
+<span class="n">毕业论文最最最终版</span>
+<span class="n">毕业论文最最最最终版</span>
+<span class="n">毕业论文最终不改版</span>
+<span class="n">毕业论文最终真不改版</span>
+<span class="n">毕业论文最终真真不改版</span>
+<span class="n">毕业论文最终打死不改版</span>
+<span class="n">毕业论文最终打死不改版</span> <span class="n">2</span>
+
+<span class="o">...</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里有很多版本，而版本控制系统就是对我们写的内容不同版本进行控制的系统。</p>
+<p>常用的版本控制系统有<code>SVN</code>和<code>Git</code>。我们在实际开发中Git使用的比较多。</p>
+<h2 id="2安装和配置">2.安装和配置</h2>
+<h3 id="21安装">2.1.安装</h3>
+<p><strong>Windows</strong></p>
+<p>对于windows只要<a href="https://git-scm.com/">下载</a>安装包直接安装即可。</p>
+<p><strong>Linux</strong></p>
+<p>使用apt-get工具下载安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">apt-get update
+sudo apt-get install git
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Mac</strong></p>
+<p>使用brew工具下载安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">brew install git
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="22安装后配置">2.2.安装后配置</h3>
+<p>不管是 Windows 安装还是 Linux 安装，安装好之后，我们都先通过如下两行命令做一个基本配置,目的是为了区分不同开发人员的身份，即每次提交都是由谁提交的。配置方式如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git config --global user.name <span class="s1">&#39;username&#39;</span>
+git config --global  user.email <span class="s1">&#39;username@qq.com&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>配置完成后配置信息存储在<code>~/.gitconfig</code>文件中</p>
+<h2 id="3基本使用">3.基本使用</h2>
+<p>在基本操作之前我们要了解一下Git使用的分区</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/b9c4d277e63dee8a88cc8d7de9f6c6bd.png" alt="image-20201201160523260"></p>
+<ul>
+<li>工作区：工作区也就是我们平常写代码的地方</li>
+<li>暂存区：通过<code>git add</code>提交后临时存放代码的地方</li>
+<li>本地库：通过<code>git commit</code>提交后存放代码的地方，本地库保存着历史版本相关信息。</li>
+<li>远程库：远程库也就是远程代码仓库，例如Gitee、GitHub、gitlab。</li>
+</ul>
+<h3 id="31初始化仓库">3.1.初始化仓库</h3>
+<p>初始化仓库有两种方式，一种是通过从远程仓库克隆，另外一种是直接从当前目录初始化，命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git init
+</code></pre></td></tr></table>
+</div>
+</div><p>执行完成后当前目录下会多出一个 <code>.git</code> 的隐藏文件夹，所有 <code>git</code> 需要的数据和资源都存放在该目录中。</p>
+<h3 id="32查看仓库状态">3.2.查看仓库状态</h3>
+<p>通过<code>git status</code>命令可以查看仓库的状态。刚初始化的仓库查看状态如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d971af1f537bb75b523b9cddd834e840.png" alt="image-20201201212527656"></p>
+<p>修改工作区后查看状态如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f8dfcdf16bbad397d693baa45793ef2b.png" alt="image-20201201212630864"></p>
+<p>提交暂存区后查看状态如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a0827a436b2099307dfc86e03f26ceb0.png" alt="image-20201201212731447"></p>
+<p>提交到本地仓库后查看状态如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a631635672b581de96a767d6283ca706.png" alt="image-20201201212836761"></p>
+<h3 id="33提交到暂存区">3.3.提交到暂存区</h3>
+<p>通过<code>git add</code>可以将工作区的内容提交到暂存区，有以下几种使用情况：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git add 具体文件
+git add .
+git add *
+</code></pre></td></tr></table>
+</div>
+</div><p><code>.</code>和<code>*</code>都代表提交工作区的所有文件。</p>
+<h3 id="34提交到本地库">3.4.提交到本地库</h3>
+<p>通过<code>git commit</code>将暂存区内容提交到本地仓库，具体使用如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git commit -m <span class="s1">&#39;提交描述内容&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意：描述内容不能为空。建议每次提交写清楚提交内容，可用于版本回退。</p>
+</blockquote>
+<h3 id="35提交到远程仓库">3.5.提交到远程仓库</h3>
+<p>如果是通过克隆的方式初始化仓库，提交到本地库后，可以直接通过<code>git push</code>直接提交到远程仓库，如果是通过<code>git init</code>初始化，需要远程远程创建好对应仓库后，让本地仓库跟远程仓库关联，让后再用 <code> git push</code>提交。</p>
+<p><strong>关联远程仓库</strong></p>
+<p>用<code>git remote</code>命令关联远程仓库，格式<code>git remote add 别名 远程仓库url</code>,举例如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git remote add origin https://github.com/xiaoxiaoshou/testgit.git
+</code></pre></td></tr></table>
+</div>
+</div><p>这里的url你可能两种类型，分别为<code>https://github.com/username/reponame.git</code>和<code>git@github.com:username/reponame.github.io.git</code>,代表着git两种不同的连接方式。</p>
+<p>其他关联远程仓库相关命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 查看关联了哪些远程分支</span>
+git remote -v
+<span class="c1"># 删除关联分支</span>
+git remote remove 别名
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>提交到远程仓库</strong></p>
+<p>提交命令格式<code>git push 别名 分支名</code>，举例如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git push origin master
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="36从远程拉取代码">3.6.从远程拉取代码</h3>
+<p>常用有以下两种方式：</p>
+<p><strong>1.使用git clone</strong></p>
+<p>默认从远程master分支拉取：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git clone 远程url地址
+</code></pre></td></tr></table>
+</div>
+</div><p>指定分支拉取：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git clone -b 分支名称 远程url地址
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>使用git pull</strong></p>
+<p>使用格式<code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code>。</p>
+<p>例如我们要将远程 origin 的 master 分支拉取过来，与本地的 master 分支合并</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git pull origin master:master
+</code></pre></td></tr></table>
+</div>
+</div><p>我们也可以简化为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git pull origin master
+git pull origin 
+git pull 
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>git pull = git fetch+git merge</code>,fetch的作用是从远程拉取代码，merge的作用是合并代码(后面分支管理有详细解析)</p>
+</blockquote>
+<h2 id="4代码撤销与版本回退">4.代码撤销与版本回退</h2>
+<h3 id="41查看提交记录">4.1.查看提交记录</h3>
+<p>使用<code>git log</code>可以查看提交过的信息，每次提交（<code>git commit</code>）到本地仓库的详细信息，每条提交信息大致如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">commit cdc2ac8c3b6d9f8bde05140aca484aa4482f8895
+Author: xiaoxiaoshou &lt;446933040@qq.com&gt;
+Date:   Tue Dec <span class="m">1</span> 15:41:13 <span class="m">2020</span> +0800
+
+    提交描述内容
+</code></pre></td></tr></table>
+</div>
+</div><p>commit后面的编号是每次提交的一个索引（我们可以叫它版本号），用于版本前进或后退</p>
+<p>使用<code>git log</code>显示的内容过多，我们一般使用下面两个比较简洁的查看方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 推荐使用</span>
+git reflog
+
+git log --online
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="42工作区代码撤销">4.2.工作区代码撤销</h3>
+<p>可能有一天你正在写代码，写了很久发现写错了，想恢复到一开始的状态，一个笨办法就是把刚刚写的代码一行一行的删除，不过这种方式成本太高，可以通过 <code>git checkout -- &lt;file&gt;</code> 命令来撤销工作区的代码修改。如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a876b0d92ed7ebd3405f481943794681.png" alt="image-20201201213326906"></p>
+<h3 id="43-添加到暂存区代码撤销">4.3. 添加到暂存区代码撤销</h3>
+<p>想要撤销提交到暂存区的代码分以下两步：</p>
+<ul>
+<li>
+<p>1.将暂存区代码撤销到工作区<code>git reset HEAD</code></p>
+</li>
+<li>
+<p>2.将工作区代码撤销（和工作区代码撤销一样）<code>git checkout -- file</code></p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/398576e58fb647779847fd18f3f4a2d3.png" alt="image-20201201214340348"></p>
+<h3 id="44提交到本地仓库代码版本回退">4.4.提交到本地仓库代码版本回退</h3>
+<p><strong>基于索引版本回退（推荐使用）</strong></p>
+<p>1.查看提交历史</p>
+<p>2.使用<code>git reset --hard [局部索引值]</code>回退（可前进和后退）</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/2737d9809c9d26d37b8a747b8863d879.png" alt="image-20201201220450928"></p>
+<p><strong>使用^符号</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git reset --hard^
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>一个<code>^</code>回退一步</p>
+</blockquote>
+<p><strong>使用~符号</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git reset --hard~n	
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>n代表后退步数</p>
+</blockquote>
+<p><strong>git reset 中三个参数比较</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git reset --soft
+git reset --mixed
+git reset --hard
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>&ndash;soft
+<ul>
+<li>仅仅在本地库移动 HEAD 指针</li>
+</ul>
+</li>
+<li>&ndash;mixed
+<ul>
+<li>在本地仓库移动HEAD指针</li>
+<li>重置暂存区</li>
+</ul>
+</li>
+<li>&ndash;hard
+<ul>
+<li>在本地库移动 HEAD 指针</li>
+<li>重置暂存区</li>
+<li>重置工作区</li>
+</ul>
+</li>
+</ul>
+<h3 id="45提交到远程仓库版本回退">4.5.提交到远程仓库版本回退</h3>
+<p>由于远程仓库与本地仓库内容一致，所以需要远程仓库版本回退只需要本地版本回退再提交到远程仓库即可。</p>
+<h2 id="5分支管理">5.分支管理</h2>
+<h3 id="51-什么是分支">5.1. 什么是分支</h3>
+<p>我们在完成一个项目时，不可能是“单线程”开发的，很多时候任务是并行的。举个栗子：项目 2.0 版本上线了，现在要着手开发 3.0 版本，同时 2.0 版本可能还有一些 bug 需要修复，这些 bug 修复之后我们可能还会发 2.1，2.2，2.3 这些版本，我们不可能等所有 bug 都修复完了再去开发 3.0 版本，修复 2.0 的 bug 和开发 3.0 的新功能是两个并行的任务，这个时候我们 3.0 的功能开发直接在 master 分支上进行肯定不合适，我们要保证有一个稳定，可以随时发版本的分支存在（一般情况下这个角色由 master 分支来扮演），此时我们就可以灵活的使用 Git 中的分支管理功能：</p>
+<ol>
+<li>创建一个长期分支用来开发 3.0 功能，假设这个分支的名字就叫 v3，我们在 v3 上添加新功能，并不断测试，当 v3 稳定后，将 v3 合并到 master 分支上。</li>
+<li>创建一个特性分支用来修复 2.0 的 bug ，一旦 bug 修复成功，就将该分支合并到 master 上，一旦发现新 bug ，就立马再创建分支进行修复，修复成功之后再合并。</li>
+</ol>
+<h3 id="52查看分支">5.2.查看分支</h3>
+<p>我们可以使用命令<code>git branch</code>来查看当前仓库有哪些分支和我们当前所处的分支</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/b17f551a19d017af3b3f2b90821a6e18.png" alt="image-20201202141956421"></p>
+<p>前面带<code>*</code>的分支为我们当前所处分支。</p>
+<h3 id="53创建并切换分支">5.3.创建并切换分支</h3>
+<p><strong>第一种方法</strong></p>
+<ul>
+<li>先用<code>git branch 分支名</code>创建分支</li>
+<li>然后再用<code>git checkout 分支名</code>切换分支</li>
+</ul>
+<p><strong>第二种方法</strong></p>
+<p>使用<code>git checkout -b 分支名</code>创建和切换分支一步到位。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1e588d88b15ddefd530ccd03d538206c.png" alt="image-20201202142619661"></p>
+<h3 id="54整合分支">5.4.整合分支</h3>
+<p>分支的整合有两种形式，一种是<code>merge</code>,另外一种是<code>rebase</code></p>
+<p><strong>merge</strong></p>
+<p>使用命令<code>git merge [有新内容的分支名]</code>合并分支。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/771ac517014c6b5c312f162b11238f52.png" alt="image-20201202155544955"></p>
+<p>上图解释：主分支在m1时发现有bug，于是切出一个分支bugFix，经过一段时间，主分支开发到m3，bugFix分支(已提交为m2)bug已经解决，这时候需要将bugFix分支合到主分支即使用命令<code>git merge bugFix</code>。</p>
+<p><strong>rebase</strong></p>
+<p>rebase 又叫变基，使用命令<code>git rebase [有新内容的分支]</code>可以变基。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210318154043849.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMjYyOTAz,size_16,color_FFFFFF,t_70" alt="\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-asHdOBrc-1607004130806)(/Users/dpf/Library/Application Support/typora-user-images/image-20201202213338236.png)\]"></p>
+<p>上图解析：上图是在主分支使用命令<code>git rebase bugFix</code>进行整合分支，整合过程是将bugFix的提交记录在主分支自底向上再提交一遍。</p>
+<p><strong>merge和rebase的区别</strong></p>
+<ul>
+<li>
+<p>merge是把当前分支和要合并的分支合并在一起，进行一次commit提交</p>
+</li>
+<li>
+<p>rebase是把要rebase分支的历史提交在当前分支按顺序重新提交，rebase之后HEAD的位置不变(也就是图中的*)</p>
+</li>
+<li>
+<p>rebase过程中可能产生冲突，解决冲突后继续提交</p>
+<ul>
+<li>解决冲突</li>
+<li>提交到缓冲区<code>git add .</code></li>
+<li>继续完成合并<code>git rebase --continue</code></li>
+</ul>
+<p>以下是冲突部分内容</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+需要合并分支的内容
+=======
+当前分支内容
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 
+</code></pre></li>
+</ul>
+<h2 id="6标签管理">6.标签管理</h2>
+<p>我们可以给某一个提交打上一个标签，以示重要。比较有代表性的打标签用它来发布对应的应用的版本比如v1.0、v2.0。Git支持两种标签：轻量标签（lightweight）与附注标签（annotated）。</p>
+<p>我们可以用以下命令查看仓库中所有标签：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git tag
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="61轻量标签">6.1.轻量标签</h3>
+<p>轻量标签很像一个不会改变的分支——它只是某个特定提交的引用。轻量标签本质上是将提交校验和存储到一个文件中——没有保存任何其他信息。</p>
+<p>轻量标签打标签格式<code>git tag 标签名称</code>，举例如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git tag v0.0
+</code></pre></td></tr></table>
+</div>
+</div><p>轻量标签默认是对最新的<code>commit</code>进行。</p>
+<p>我们也可以对指定<code>commit</code>进行打标签，格式<code>git tag 标签名称 commi对应索引</code>。举例如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 查看commit索引</span>
+git reflog
+<span class="c1"># 打标签</span>
+git tag v0.01 bcde256
+</code></pre></td></tr></table>
+</div>
+</div><p>我们也可以删除掉本地仓库上的标签，格式<code>git tag -d 标签名称</code>，举例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git tag -d v0.01
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="62附注标签">6.2.附注标签</h3>
+<p>附注标签是存储在仓库中一个完整对象，它有自己的校验和信息，其中包含标签者的名字、电子邮件、日期时间，此外还有一个标签信息。可以使用<code> GNU Privacy Guard （GPG)</code>  签名并验证。</p>
+<p>打附注标签格式 <code>git tag -a 标签名称 -m  '标签信息'</code>,举例如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git tag -a v1.0 -m <span class="s1">&#39;my version 1.0&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="63将标签推送到远程仓库">6.3.将标签推送到远程仓库</h3>
+<p>默认情况下，<code>git push</code> 命令并不会传送标签到远程仓库。需要我们手动将标签推送到远程仓库，推送格式<code>git push 远程分支别名 标签名</code>，举例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git push origin v1.0
+</code></pre></td></tr></table>
+</div>
+</div><hr>
+<p>参考资料：</p>
+<p><a href="https://git-scm.com/book/zh/v2">https://git-scm.com/book/zh/v2</a></p>
+<p><a href="https://www.runoob.com/git/git-tutorial.html">https://www.runoob.com/git/git-tutorial.html</a></p>
+<p><a href="https://segmentfault.com/a/1190000037465780">https://segmentfault.com/a/1190000037465780</a></p>
+<p>边学习边玩会游戏：<a href="https://learngitbranching.js.org/?locale=zh_CN">https://learngitbranching.js.org/?locale=zh_CN</a></p>
+</div>
+        
+            <div class="article-licensing box">
+    <div class="licensing-title">
+        <p>Git非官方使用总结</p>
+        <p><a href="https://blog.dpf114.top/posts/git-often-used/">https://blog.dpf114.top/posts/git-often-used/</a></p>
+    </div>
+    <div class="licensing-meta level is-mobile">
+        <div class="level-left">
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>作者</h6>
+                        <p>pikachues</p>
+                    </div>
+                </div>
+            
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>发布于</h6>
+                        <p>2020-12-22</p>
+                    </div>
+                </div>
+            
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>更新于</h6>
+                        <p>2020-12-22</p>
+                    </div>
+                </div>
+            
+            <div class="level-item is-narrow">
+                <div>
+                    <h6>许可协议</h6>
+                    <p>
+                        
+                            <a class="" title="CC BY-NC 4.0" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
+                                CC BY-NC 4.0
+                            </a>
+                        
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+        
+            <div class="article-tags size-small mb-4">
+                <span class="mr-2">#</span><a class="link-muted mr-2" href="/tags/Git" rel="tag">Git</a></div>
+        
+        
+
+    </article>
+</div>
+
+
+    <div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+                
+
+    <a class="button donate" data-type="alipay">
+        <span class="icon is-small">
+            <i class="fab fa-alipay"></i>
+        </span>
+        <span>支付宝</span>
+        <span class="qrcode">
+            <img src="/img/alipay.png" alt="支付宝">
+        </span>
+    </a>
+
+
+                
+            
+                
+                
+
+    <a class="button donate" data-type="wechat">
+        <span class="icon is-small">
+            <i class="fab fa-weixin"></i>
+        </span>
+        <span>微信</span>
+        <span class="qrcode">
+            <img src="/img/wechat.png" alt="微信">
+        </span>
+    </a>
+
+
+                
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+    <nav class="post-navigation mt-4 level is-mobile">
+        
+            <div class="level-start">
+                <a class="article-nav-prev level level-item link-muted" href="https://blog.dpf114.top/posts/linux-often/">
+                    <i class="level-item fas fa-chevron-left"></i>
+                    <span class="level-item">自用Linux常用命令</span>
+                </a>
+            </div>
+        
+        
+            <div class="level-end">
+                <a class="article-nav-next level level-item link-muted" href="https://blog.dpf114.top/posts/nginx-config/">
+                    <span class="level-item">Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</span>
+                    <i class="level-item fas fa-chevron-right"></i>
+                </a>
+            </div>
+        
+    </nav>
+
+
+
+    <div class="card">
+    <div class="card-content">
+        <h3 class="title is-5">评论</h3>
+        
+        
+
+
+    
+    <div id="valine-thread" class="content"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js"></script>
+    <script>
+        new Valine({
+          el: '#valine-thread',
+          app_id: "GeG3Ob5TvK8CJKXmJI8hc7fA-MdYXbMMI",
+          app_key: "ePVOGzkm0LD03BtB3UM4pbEp",
+          placeholder: "发表你的意见，让我们一起交流，共同提高...(填写昵称和邮箱回复有提醒哟)",
+          avatar: "mm",
+          avatarForce:  false ,
+          meta: "[\"nick\",\"mail\",\"link\"]",
+          pageSize:  10 ,
+          lang: "zh-CN",
+          visitor:  false ,
+          highlight:  true ,
+          recordIP:  false ,
+          serverURLs: "",
+          emojiCDN: "",
+          emojiMaps:  null ,
+          enableQQ:  false ,
+          requiredFields: "[]",
+        });
+    </script>
+
+
+        
+    </div>
+</div>
+
+
+
+
+            </div>
+            
+
+    <div class="column column-left is-4-tablet is-4-desktop is-3-widescreen order-1 is-sticky">
+        
+            
+            
+                
+                
+<div class="card widget" data-type="profile">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered flex-shrink-1">
+                <div>
+                    <figure class="image is-128x128 mx-auto mb-2">
+                        <img class="avatar is-rounded"
+                             src="/img/pikachues.jpg"
+                             alt="Pikachues">
+                    </figure>
+                    <p class="title is-size-4 is-block" style="line-height: inherit">Pikachues</p>
+                    <p class="is-size-6 is-block">Better Luck Tomorrow</p>
+                    
+                        <p class="is-size-6 is-flex justify-content-center">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>China</span>
+                        </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">文章</p>
+                    <a href="/archives"><p class="title">19</p></a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">分类</p>
+                    <a href="/categories"><p class="title">7</p></a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">标签</p>
+                    <a href="/tags"><p class="title">11</p></a>
+                </div>
+            </div>
+        </nav>
+        
+            <div class="level">
+                <a class="level-item button is-primary is-rounded" href="https://github.com/xiaoxiaoshou"
+                   target="_blank" rel="noopener">关注我</a>
+            </div>
+        
+        <div class="level is-mobile">
+            
+                <a class="level-item button is-transparent is-marginless" title="Mail" href="mailto:446933040@qq.com"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            
+                <a class="level-item button is-transparent is-marginless" title="RSS" href="/index.xml"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-rss"></i>
+                </a>
+            
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+    <div class="card widget" id="toc" data-type="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">目录</h3>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么版本控制系统">1.什么版本控制系统</a></li>
+        <li><a href="#2安装和配置">2.安装和配置</a>
+          <ul>
+            <li><a href="#21安装">2.1.安装</a></li>
+            <li><a href="#22安装后配置">2.2.安装后配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#3基本使用">3.基本使用</a>
+          <ul>
+            <li><a href="#31初始化仓库">3.1.初始化仓库</a></li>
+            <li><a href="#32查看仓库状态">3.2.查看仓库状态</a></li>
+            <li><a href="#33提交到暂存区">3.3.提交到暂存区</a></li>
+            <li><a href="#34提交到本地库">3.4.提交到本地库</a></li>
+            <li><a href="#35提交到远程仓库">3.5.提交到远程仓库</a></li>
+            <li><a href="#36从远程拉取代码">3.6.从远程拉取代码</a></li>
+          </ul>
+        </li>
+        <li><a href="#4代码撤销与版本回退">4.代码撤销与版本回退</a>
+          <ul>
+            <li><a href="#41查看提交记录">4.1.查看提交记录</a></li>
+            <li><a href="#42工作区代码撤销">4.2.工作区代码撤销</a></li>
+            <li><a href="#43-添加到暂存区代码撤销">4.3. 添加到暂存区代码撤销</a></li>
+            <li><a href="#44提交到本地仓库代码版本回退">4.4.提交到本地仓库代码版本回退</a></li>
+            <li><a href="#45提交到远程仓库版本回退">4.5.提交到远程仓库版本回退</a></li>
+          </ul>
+        </li>
+        <li><a href="#5分支管理">5.分支管理</a>
+          <ul>
+            <li><a href="#51-什么是分支">5.1. 什么是分支</a></li>
+            <li><a href="#52查看分支">5.2.查看分支</a></li>
+            <li><a href="#53创建并切换分支">5.3.创建并切换分支</a></li>
+            <li><a href="#54整合分支">5.4.整合分支</a></li>
+          </ul>
+        </li>
+        <li><a href="#6标签管理">6.标签管理</a>
+          <ul>
+            <li><a href="#61轻量标签">6.1.轻量标签</a></li>
+            <li><a href="#62附注标签">6.2.附注标签</a></li>
+            <li><a href="#63将标签推送到远程仓库">6.3.将标签推送到远程仓库</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+            </div>
+        </div>
+        <style>
+        .menu-list > li > a.is-active + .menu-list {display: block;}
+        .menu-list > li > a + .menu-list {display: none;}
+        </style>
+        <script type="text/javascript" src="/js/toc.js" defer></script>
+    </div>
+
+
+                
+            
+        
+            
+            
+                
+                <div class="card widget" data-type="categories">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">分类</h3>
+            <ul class="menu-list">
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/git/">
+                            <span class="level-start">
+                                <span class="level-item">git</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/http%e5%8d%8f%e8%ae%ae/">
+                            <span class="level-start">
+                                <span class="level-item">http协议</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">13</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/linux/">
+                            <span class="level-start">
+                                <span class="level-item">linux</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/nginx/">
+                            <span class="level-start">
+                                <span class="level-item">nginx</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/python/">
+                            <span class="level-start">
+                                <span class="level-item">python</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/ssm/">
+                            <span class="level-start">
+                                <span class="level-item">ssm</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/%e7%bd%91%e7%bb%9c/">
+                            <span class="level-start">
+                                <span class="level-item">网络</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+                
+            
+        
+            
+            
+                
+                <div class="card widget" data-type="tags">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">标签</h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/git/">
+                            <span class="tag">git</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/http/">
+                            <span class="tag">http</span>
+                            <span class="tag">11</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/https/">
+                            <span class="tag">https</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/htts/">
+                            <span class="tag">htts</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/jwt/">
+                            <span class="tag">jwt</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/linux/">
+                            <span class="tag">linux</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/nginx/">
+                            <span class="tag">nginx</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/python%e5%9f%ba%e7%a1%80/">
+                            <span class="tag">python基础</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/springmvc/">
+                            <span class="tag">springmvc</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/%e4%b8%b4%e6%97%b6cookies/">
+                            <span class="tag">临时cookies</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/%e5%b1%80%e5%9f%9f%e7%bd%91/">
+                            <span class="tag">局域网</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="recent-posts">
+    <div class="card-content">
+        <h3 class="menu-label">最新文章</h3>
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-12-22T17:20:56&#43;08:00'>2020-12-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/nginx-config/">Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</a></p>
+        <p class="categories"><a href="/categories/Nginx">Nginx</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-12-22T17:20:56&#43;08:00'>2020-12-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/git-often-used/">Git非官方使用总结</a></p>
+        <p class="categories"><a href="/categories/Git">Git</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-11-22T17:20:56&#43;08:00'>2020-11-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/linux-often/">自用Linux常用命令</a></p>
+        <p class="categories"><a href="/categories/Linux">Linux</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-08-25T22:14:55&#43;08:00'>2020-08-25</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/%E4%B8%8Ehttp%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BB%84%E4%BB%B6/">与HTTP相关的组件</a></p>
+        <p class="categories"><a href="/categories/HTTP%e5%8d%8f%e8%ae%ae">HTTP协议</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-08-23T22:14:55&#43;08:00'>2020-08-23</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/jwt%E5%92%8Csession-cookies%E4%B8%B4%E6%97%B6cookies/">jwt和Session cookies（临时cookies）</a></p>
+        <p class="categories"><a href="/categories/HTTP%e5%8d%8f%e8%ae%ae">HTTP协议</a></p>
+    </div>
+</article>
+
+        
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="archives">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">归档</h3>
+            <ul class="menu-list">
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-12">
+                            <span class="level-start">
+                                <span class="level-item">2020年 12月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">2</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-11">
+                            <span class="level-start">
+                                <span class="level-item">2020年 11月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-08">
+                            <span class="level-start">
+                                <span class="level-item">2020年 8月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">13</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-03">
+                            <span class="level-start">
+                                <span class="level-item">2020年 3月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">3</span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="links">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">链接</h3>
+            <ul class="menu-list">
+                
+                    <li>
+                        <a class="level is-mobile" href="https://gohugo.io" target="_blank" rel="noopener">
+                            <span class="level-left"><span class="level-item">Hugo</span></span>
+                            <span class="level-right">
+                                <span class="level-item tag">
+                                    gohugo.io
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="https://blog.csdn.net/qq_41262903" target="_blank" rel="noopener">
+                            <span class="level-left"><span class="level-item">CSDN</span></span>
+                            <span class="level-right">
+                                <span class="level-item tag">
+                                    blog.csdn.net
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+        
+            
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen "></div>
+        
+    </div>
+
+
+    <div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 ">
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+    </div>
+
+
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start">
+                <a class="footer-logo is-block mb-2" href="/">
+                    
+                        eRunn&#39;s Blog
+                    
+                </a>
+                <p class="is-size-7">
+                    <span>&copy; 2020 - 2021 pikachues</span>&nbsp;&nbsp;Powered by <a href="https://github.com/gohugoio/hugo/releases/tag/v0.77.0" target="_blank" rel="noopener">Hugo 0.77.0</a>&nbsp;&&nbsp;<a href="https://github.com/iMaple/hugo-theme-icarus/" target="_blank" rel="noopener">Icarus</a>
+
+                    <br/>
+                    <span>
+                        <img style="width: 60px;height: 21px;" src="https://cdn.jsdelivr.net/gh/xiaoxiaoshou/staticResouce/img/ypy_logo5.png">
+                        <a href="https://console.upyun.com/register/?invite=rknj9xrGD">提供加速服务</a>
+                    </span>
+                    <br/>
+                    <span>
+                        <img src="https://cdn.jsdelivr.net/gh/xiaoxiaoshou/staticResouce/img/icp.png" alt="">
+                        <a href="https://beian.miit.gov.cn/">湘ICP备2020018013号</a>
+                    </span>
+                </p>
+            </div>
+            <div class="level-end">
+                <div class="field has-addons">
+                    
+                        <p class="control">
+                            <a class="button is-transparent is-large" title="Creative Commons" href="https://creativecommons.org/" target="_blank" rel="noopener">
+                                <i class="fab fa-creative-commons"></i>
+                            </a>
+                        </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script>moment.locale("zh-cn");</script>
+
+<script>
+    var IcarusThemeSettings = {
+      article: {
+        highlight: {
+          clipboard:  true ,
+          fold: "unfolded"
+        }
+      },
+      toc: {
+        index:  true 
+      }
+    };
+</script>
+
+<script type="text/javascript" src="/js/column.js"></script>
+
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="/js/animation.js"></script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <a id="back-to-top" title="回到顶端" href="javascript:;">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+    <script type="text/javascript" src="/js/back2top.js" defer></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
+    <script>
+    window.addEventListener('load', () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static:  false ,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: '#edeff5',
+            text: '#838391'
+          },
+          button: {
+            background: '#4b81e8'
+          },
+        },
+      });
+    });
+    </script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+      'HTML-CSS': {matchFontHeight: false},
+      SVG: {matchFontHeight: false},
+      CommonHTML: {matchFontHeight: false},
+      tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <div id="outdated">
+        <h6>Your browser is out-of-date!</h6>
+        <p>Update your browser to view this website correctly.&nbsp;
+            <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a>
+        </p>
+        <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js" defer></script>
+    <script>
+        window.addEventListener('load', function () {
+          outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'object-fit'
+          });
+        });
+    </script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js" async></script>
+
+
+        
+    
+
+    
+    
+
+
+<script type="text/javascript" src="/js/main.js" defer></script>
+
+
+    
+    <div class="searchbox">
+    <div class="searchbox-container">
+        <div class="searchbox-header">
+            <div class="searchbox-input-container">
+                <input class="searchbox-input" type="text" placeholder="想要查找什么..."/>
+            </div>
+            <a class="searchbox-close" href="javascript:;">×</a>
+        </div>
+        <div class="searchbox-body"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/insight.js" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      loadInsight(
+        {contentUrl: '/index.json'},
+        {
+          hint: "想要查找什么...",
+          untitled: "(无标题)",
+          posts: "文章",
+          pages: "页面",
+          categories: "分类",
+          tags: "标签"
+        }
+      );
+    });
+</script>
+
+    
+
+
+</body>
+</html>

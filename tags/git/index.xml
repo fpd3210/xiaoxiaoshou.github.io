@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on eRunn&#39;s Blog</title>
+    <link>https://blog.dpf114.top/tags/git/</link>
+    <description>Recent content in Git on eRunn&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>446933040@qq.com (pikachues)</managingEditor>
+    <webMaster>446933040@qq.com (pikachues)</webMaster>
+    <lastBuildDate>Tue, 22 Dec 2020 17:20:56 +0800</lastBuildDate><atom:link href="https://blog.dpf114.top/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git非官方使用总结</title>
+      <link>https://blog.dpf114.top/posts/git-often-used/</link>
+      <pubDate>Tue, 22 Dec 2020 17:20:56 +0800</pubDate>
+      <author>446933040@qq.com (pikachues)</author>
+      <guid>https://blog.dpf114.top/posts/git-often-used/</guid>
+      <description>1.什么版本控制系统 单独的讲版本控制我们或许不知道它是什么，但是举个我们生活中的小例子，我们很容易明白它是什么。 例如我们毕业修改无数遍的论文</description>
+    </item>
+    
+  </channel>
+</rss>

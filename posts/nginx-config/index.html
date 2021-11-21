@@ -1,0 +1,2637 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="renderer" content="webkit"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+<meta http-equiv="Cache-Control" content="no-transform"/>
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+<meta name="generator" content="Hugo 0.77.0 with theme icarus"/>
+<meta name="google-site-verification" content="Your googleVerification code"/>
+<meta name="baidu-site-verification" content="fLJoj3MEpkHW20ix"/>
+
+<meta name="author" content="pikachues"/>
+<meta name="description" content="1.Nginx是什么 Nginx是一个高性能的Web和反向代理服务器。作为web服务器它与我们常用的web应用服务器（tomcat、jetty"/>
+<meta name="keywords" content=""/>
+
+<title>Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群） - eRunn&#39;s Blog</title>
+
+
+<meta name="application-name" content="eRunn&#39;s Blog" />
+<meta name="msapplication-TileImage" content="img/favicon.ico" />
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="eRunn&#39;s Blog" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/blog.dpf114.top\/posts\/nginx-config\/"
+    },
+    "headline": "eRunn\u0027s Blog",
+    "image": [],
+    "dataPublished": "2020-12-22T17:20:56\u002b08:00",
+    "dataModified": "2020-12-22T17:20:56\u002b08:00",
+    "author": {
+        "@type": "Person",
+        "name": "pikachues"
+    },
+    "description": "1.Nginx是什么 Nginx是一个高性能的Web和反向代理服务器。作为web服务器它与我们常用的web应用服务器（tomcat、jetty"
+}
+</script>
+
+
+<link rel="canonical" href="https://blog.dpf114.top/posts/nginx-config/"/>
+<link rel="alternate" href="https://blog.dpf114.top/index.xml" title="eRunn&#39;s Blog" type="application/rss+xml"/>
+<link rel="icon" href="/img/favicon.ico"/>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-light.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source&#43;Code&#43;Pro"/>
+
+<link rel="stylesheet" href="/css/default.css"/>
+
+
+    
+    
+        
+        
+        
+        
+
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css"/>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css"/>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+
+
+
+</head>
+<body class="is-3-column">
+<nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand justify-content-center">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    eRunn&#39;s Blog
+                
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                
+                    <a class="navbar-item "
+                       href="/">主页</a>
+                
+                    <a class="navbar-item "
+                       href="/archives">归档</a>
+                
+                    <a class="navbar-item "
+                       href="/categories">分类</a>
+                
+                    <a class="navbar-item "
+                       href="/tags">标签</a>
+                
+                    <a class="navbar-item "
+                       href="/about">关于</a>
+                
+            </div>
+            <div class="navbar-end">
+                
+                    
+                        <a class="navbar-item" target="_blank" title="github" href="https://github.com/xiaoxiaoshou" rel="noopener">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    
+                
+                
+                    <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                        <i class="fas fa-list-ul"></i>
+                    </a>
+                
+                
+                    <a class="navbar-item search" title="搜索" href="javascript:;">
+                        <i class="fas fa-search"></i>
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen">
+                
+    <div class="card">
+    
+    <article class="card-content article" role="article">
+        
+            <div class="article-meta is-size-7 is-uppercase level is-mobile">
+                <div class="level-left">
+                    
+                        <span class="level-item">
+                            <time dateTime="2020-12-22T17:20:56&#43;08:00"
+                                  title="2020-12-22T17:20:56&#43;08:00">2020-12-22</time>发表
+                        </span>
+                    
+                    
+                        <span class="level-item">
+                            <time dateTime="2020-12-22T17:20:56&#43;08:00"
+                                  title="2020-12-22T17:20:56&#43;08:00">2020-12-22</time>更新
+                        </span>
+                    
+                    
+                    
+                        <span class="level-item">
+                            
+                            <a class="link-muted" href="/categories/Nginx">Nginx</a>
+                        </span>
+                    
+                    
+                        <span class="level-item">12 分钟读完 (大约5616个字)</span>
+                    
+                    
+                        <span class="level-item" id="busuanzi_container_page_pv">
+                            <span id="busuanzi_value_page_pv">0</span>次访问
+                        </span>
+                    
+                </div>
+            </div>
+        
+        <h1 class="title is-3 is-size-4-mobile">Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</h1>
+        <div class="content"><h2 id="1nginx是什么">1.Nginx是什么</h2>
+<p>Nginx是一个高性能的Web和反向代理服务器。作为web服务器它与我们常用的web应用服务器（tomcat、jetty）不同的是：它不能解析jsp等页面，只能解析html、css、JavaScript；作为反向代理服务器它在我们应用部署时应用广泛，例如静态页面的部署、反向代理等。</p>
+<h2 id="2安装">2.安装</h2>
+<h3 id="windows">Windows</h3>
+<p>下载，解压即可立即使用。</p>
+<h3 id="linux">Linux</h3>
+<p><a href="https://blog.csdn.net/qq_41262903/article/details/106072890">看这篇教程</a></p>
+<h3 id="mac">Mac</h3>
+<p>Mac可以跟Linux一样安装，也可以用下面方法安装：</p>
+<p>查询是否已经安装和对应信息</p>
+<pre><code>brew info nginx
+</code></pre><p><img src="https://img-blog.csdnimg.cn/img_convert/1d422228d375ce25b1ee206155b7dab9.png" alt="https://cdn.jsdelivr.net/gh/xiaoxiaoshou/staticResouce/img/20201216155014.png"></p>
+<p>安装</p>
+<pre><code>brew install nginx
+</code></pre><blockquote>
+<p>安装已经配置好环境变量可以直接启动</p>
+</blockquote>
+<p>启动</p>
+<pre><code>nginx 
+</code></pre><p>配置文件</p>
+<pre><code>vim /usr/local/etc/nginx/nginx.conf
+</code></pre><h2 id="3配置文件详解">3.配置文件详解</h2>
+<p>例如Linux安装好之后，我们在<code>/usr/local/nginx/conf/</code>有一个文件名为<code>nginx.conf</code>的配置文件。配置文件默认内容如下（已经加上注释）：</p>
+<p>给配置文件加上注释</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1">#user  nobody;</span>
+<span class="c1"># 启动进程，通常设置成和cpu的数量相等</span>
+worker_processes  1<span class="p">;</span>
+
+<span class="c1"># 全局错误日志</span>
+<span class="c1">#error_log  logs/error.log;</span>
+<span class="c1">#error_log  logs/error.log  notice;</span>
+<span class="c1">#error_log  logs/error.log  info;</span>
+
+<span class="c1"># PID文件</span>
+<span class="c1">#pid        logs/nginx.pid;</span>
+
+
+<span class="c1"># 工作模式及连接数上限</span>
+events <span class="o">{</span>
+    <span class="c1"># 支持最大连接数</span>
+    worker_connections  1024<span class="p">;</span>
+<span class="o">}</span>
+
+
+http <span class="o">{</span>
+    <span class="c1">#文件扩展名与文件类型映射表</span>
+    include       mime.types<span class="p">;</span>
+    <span class="c1">#默认文件类型</span>
+    default_type  application/octet-stream<span class="p">;</span>
+
+    <span class="c1"># 日志格式 </span>
+    <span class="c1">#log_format  main  &#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;</span>
+    <span class="c1">#                  &#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;</span>
+    <span class="c1">#                  &#39;&#34;$http_user_agent&#34; &#34;$http_x_forwarded_for&#34;&#39;;</span>
+
+    <span class="c1">#access_log  logs/access.log  main;</span>
+
+    <span class="c1"># 指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件</span>
+    sendfile        on<span class="p">;</span>
+
+    <span class="c1">#防止网络阻塞</span>
+    <span class="c1">#tcp_nopush     on;</span>
+
+    <span class="c1"># 连接超时时间</span>
+    <span class="c1">#keepalive_timeout  0;</span>
+    keepalive_timeout  65<span class="p">;</span>
+
+    <span class="c1"># 开启zip压缩</span>
+    <span class="c1">#gzip  on;</span>
+
+    <span class="c1"># 虚拟主机配置，一个http中可以包含多个server</span>
+    server <span class="o">{</span>
+        <span class="c1"># 监听端口</span>
+        listen       8080<span class="p">;</span>
+        <span class="c1"># 请求地址（可以是域名或IP地址），多个地址之间用空格隔开</span>
+        server_name  localhost<span class="p">;</span>
+
+        <span class="c1"># 编码, 如果网页格式与当前配置的不同的话将会被自动转码</span>
+        <span class="c1">#charset koi8-r;</span>
+
+        <span class="c1">#虚拟主机访问日志定义    </span>
+        <span class="c1">#access_log  logs/host.access.log  main;</span>
+
+        <span class="c1"># location对指定路径进行拦截处理（默认路径）    </span>
+        location / <span class="o">{</span>
+            <span class="c1"># 首页应用路径</span>
+            root   html<span class="p">;</span>
+            <span class="c1"># 首页对应root下的哪个文件</span>
+            index  index.html index.htm<span class="p">;</span>
+        <span class="o">}</span>
+
+        <span class="c1"># 错误信息页面</span>
+        <span class="c1">#error_page  404              /404.html;</span>
+
+        <span class="c1"># redirect server error pages to the static page /50x.html</span>
+        <span class="c1">#</span>
+        error_page   <span class="m">500</span> <span class="m">502</span> <span class="m">503</span> <span class="m">504</span>  /50x.html<span class="p">;</span>
+        <span class="nv">location</span> <span class="o">=</span> /50x.html <span class="o">{</span>
+            root   html<span class="p">;</span>
+        <span class="o">}</span>
+
+        <span class="c1"># 代理配置例子：访问URL以.php结尾则自动转交给127.0.0.1</span>
+        <span class="c1"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span>
+        <span class="c1">#</span>
+        <span class="c1">#location ~ \.php$ {</span>
+        <span class="c1">#    proxy_pass   http://127.0.0.1;</span>
+        <span class="c1">#}</span>
+
+
+        <span class="c1"># 转发(类似代理Proxy)： php脚本请求全部代理给FastCGI处理</span>
+        <span class="c1"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span>
+        <span class="c1">#</span>
+        <span class="c1">#location ~ \.php$ {</span>
+        <span class="c1">#    root           html;</span>
+        <span class="c1">#    fastcgi_pass   127.0.0.1:9000;</span>
+        <span class="c1">#    fastcgi_index  index.php;</span>
+        <span class="c1">#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span>
+        <span class="c1">#    include        fastcgi_params;</span>
+        <span class="c1">#}</span>
+
+        <span class="c1"># 配置禁止访问 .htxxx文件</span>
+        <span class="c1"># deny access to .htaccess files, if Apache&#39;s document root</span>
+        <span class="c1"># concurs with nginx&#39;s one</span>
+        <span class="c1">#</span>
+        <span class="c1">#location ~ /\.ht {</span>
+        <span class="c1">#    deny  all;</span>
+        <span class="c1">#}</span>
+    <span class="o">}</span>
+
+
+    <span class="c1"># another virtual host using mix of IP-, name-, and port-based configuration</span>
+    <span class="c1">#</span>
+    <span class="c1">#server {</span>
+    <span class="c1">#    listen       8000;</span>
+    <span class="c1">#    listen       somename:8080;</span>
+    <span class="c1">#    server_name  somename  alias  another.alias;</span>
+
+    <span class="c1">#    location / {</span>
+    <span class="c1">#        root   html;</span>
+    <span class="c1">#        index  index.html index.htm;</span>
+    <span class="c1">#    }</span>
+    <span class="c1">#}</span>
+
+
+    <span class="c1"># HTTPS server</span>
+    <span class="c1">#</span>
+    <span class="c1">#server {</span>
+    <span class="c1">#    listen       443 ssl;</span>
+    <span class="c1">#    server_name  localhost;</span>
+
+    <span class="c1">#    ssl_certificate      cert.pem;</span>
+    <span class="c1">#    ssl_certificate_key  cert.key;</span>
+
+    <span class="c1">#    ssl_session_cache    shared:SSL:1m;</span>
+    <span class="c1">#    ssl_session_timeout  5m;</span>
+
+    <span class="c1">#    ssl_ciphers  HIGH:!aNULL:!MD5;</span>
+    <span class="c1">#    ssl_prefer_server_ciphers  on;</span>
+
+    <span class="c1">#    location / {</span>
+    <span class="c1">#        root   html;</span>
+    <span class="c1">#        index  index.html index.htm;</span>
+    <span class="c1">#    }</span>
+    <span class="c1">#}</span>
+
+    include servers/*<span class="p">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="4常用配置">4.常用配置</h2>
+<h3 id="41反向代理">4.1.反向代理</h3>
+<p>在进行配置前先了解几个概念：代理服务器、正向代理、反向代理。</p>
+<p><strong>代理服务器</strong></p>
+<p>所谓代理服务器就是位于发起请求的客户端与原始服务器端之间的一台跳板服务器，正向代理可以隐藏客户端，反向代理可以隐藏原始服务器。</p>
+<p><strong>正向代理</strong></p>
+<p>用户知道目标服务器地址，但由于网络限制等原因，无法直接访问。这时候需要先连接代理服务器，然后再由代理服务器访问目标服务器。正向代理目标服务器不知道真实的客户端。</p>
+<p><strong>反向代理</strong></p>
+<p>用户知道代理服务器地址，但是代理服务器不是最终处理用户请求的服务器，代理服务器通过用户的请求地址将请求交给不同的最终服务器处理。反向向代理用户不知道真实服务器的地址。</p>
+<p><strong>配置举例</strong></p>
+<p>例子1：我们将来自于www.123.com的请求全部反向代理给http://127.0.0.1:8080处理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">server <span class="o">{</span>
+        listen       80<span class="p">;</span>
+        server_name  www.123.com<span class="p">;</span>
+
+        location / <span class="o">{</span>
+            proxy_pass http://127.0.0.1:8080<span class="p">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>例子2：根据访问的路径将请求交给不同的服务处理。</p>
+<p>访问 http://127.0.0.1/edu/  请求交给http://127.0.0.1:8081处理</p>
+<p>访问 http://127.0.0.1/vod/ 请求交给http://127.0.0.1:8082处理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">server <span class="o">{</span>
+        listen       80<span class="p">;</span>
+        server_name  www.123.com<span class="p">;</span>
+
+        location ~ /edu/ <span class="o">{</span>
+            proxy_pass http://127.0.0.1:8081<span class="p">;</span>
+        <span class="o">}</span>
+        
+        location ~ /vod/ <span class="o">{</span>
+            proxy_pass http://127.0.0.1:8082<span class="p">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>location说明</strong></p>
+<p><code>location</code>用于请求路径的匹配。语法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">location <span class="o">[=</span> <span class="p">|</span> ~ <span class="p">|</span> ~* <span class="p">|</span> ^~<span class="o">]</span> url <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>=</code> 用于不含正则表达式的URL的精确匹配。</li>
+<li><code>~</code>用于表示URL包含正则表达式的匹配，区分大小写。</li>
+<li><code>~*</code>用于表示URL包含正则表达式的匹配，不区分大小写。</li>
+<li><code>^~</code>表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录</li>
+</ul>
+<blockquote>
+<p>如果URI包含正则表达式，必须包含<code>~</code>或者<code>~*</code>标识</p>
+</blockquote>
+<h3 id="42-负载均衡">4.2 负载均衡</h3>
+<h4 id="什么是负载均衡">什么是负载均衡？</h4>
+<p>负载均衡从字面意思理解将自己承受不了的压力分摊给别人处理共同承受压力。在我们部署环境中意思为将请求分发给多台服务器进行处理，使服务器能够承受更大的并发。</p>
+<h4 id="配置举例">配置举例</h4>
+<p>将来自http://127.0.0.1/edu/1.html的访问实现负载均衡效果，平均分配给8080和8081端口处理。</p>
+<p>准备两个Tomcat(修改端口号准备好1.html文件)分别启动。</p>
+<p><code>nginx</code>配置:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">http<span class="o">{</span>
+
+  upstream myserver<span class="o">{</span>
+    server 127.0.0.1:8080<span class="p">;</span>
+    server 127.0.0.1:8081<span class="p">;</span>
+  <span class="o">}</span>
+  
+  server<span class="o">{</span>
+  	listen	80<span class="p">;</span>
+  	server_name localhost<span class="p">;</span>
+  <span class="o">}</span>
+  
+  location / <span class="o">{</span>
+  	proxy_pass	http://myserver<span class="p">;</span>
+  	root	html<span class="p">;</span>
+  	index	index.html	index.htm<span class="p">;</span>
+  <span class="o">}</span>
+  
+<span class="o">}</span>  
+  
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>myserver为自己取得名称，可以随意取。</p>
+</blockquote>
+<h4 id="nginx实现负载均衡的几种策略">Nginx实现负载均衡的几种策略</h4>
+<p><strong>1.轮询</strong>（默认策略）</p>
+<p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除</p>
+<p><strong>2.weight</strong></p>
+<p>weight代表权重，默认为1，权重越大被分配的客户端越多。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">http<span class="o">{</span>
+
+  upstream myserver<span class="o">{</span>
+    server 127.0.0.1:8080	<span class="nv">weight</span><span class="o">=</span>10<span class="p">;</span>
+    server 127.0.0.1:8081	<span class="nv">weight</span><span class="o">=</span>5<span class="p">;</span>
+  <span class="o">}</span>
+  
+  server<span class="o">{</span>
+  	listen	80<span class="p">;</span>
+  	server_name localhost<span class="p">;</span>
+  <span class="o">}</span>
+  
+  location / <span class="o">{</span>
+  	proxy_pass	http://myserver<span class="p">;</span>
+  	root	html<span class="p">;</span>
+  	index	index.html	index.htm<span class="p">;</span>
+  <span class="o">}</span>
+  
+<span class="o">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>3.ip_hash</strong></p>
+<p>每个请求按ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决Session问题。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">http<span class="o">{</span>
+
+  upstream myserver<span class="o">{</span>
+  	ip_hash<span class="p">;</span>
+    server 127.0.0.1:8080<span class="p">;</span>
+    server 127.0.0.1:8081<span class="p">;</span>
+  <span class="o">}</span>
+  
+  server<span class="o">{</span>
+  	listen	80<span class="p">;</span>
+  	server_name localhost<span class="p">;</span>
+  <span class="o">}</span>
+  
+  location / <span class="o">{</span>
+  	proxy_pass	http://myserver<span class="p">;</span>
+  	root	html<span class="p">;</span>
+  	index	index.html	index.htm<span class="p">;</span>
+  <span class="o">}</span>
+  
+<span class="o">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>4.fair</strong></p>
+<p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">http<span class="o">{</span>
+
+  upstream myserver<span class="o">{</span>
+    server 127.0.0.1:8080<span class="p">;</span>
+    server 127.0.0.1:8081<span class="p">;</span>
+    fair<span class="p">;</span>
+  <span class="o">}</span>
+  
+  server<span class="o">{</span>
+  	listen	80<span class="p">;</span>
+  	server_name localhost<span class="p">;</span>
+  <span class="o">}</span>
+  
+  location / <span class="o">{</span>
+  	proxy_pass	http://myserver<span class="p">;</span>
+  	root	html<span class="p">;</span>
+  	index	index.html	index.htm<span class="p">;</span>
+  <span class="o">}</span>
+  
+<span class="o">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="43-动静分离">4.3 动静分离</h3>
+<h4 id="什么是动静分离">什么是动静分离？</h4>
+<p>Nginx 动静分离简单来说就是把动态资源跟静态资源请求分开，不能理解成只是单纯的把动态页面和静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开（通过 location 指定不同的后缀名实现不同的请求转发，通过expires配置静态资源缓存时间）；目的是提高网站响应速度，减轻服务器的负担。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1b57fec6defbb7b40e9d354caf738507.png" alt="image-20210107163141459"></p>
+<p>从目前的实现角度来说大致有两种：</p>
+<ul>
+<li>一种是把静态文件放在单独的服务器上，这是目前主流的方法；</li>
+<li>一种就是动态文件和动态文件混合在一起发布，通过nginx配置分开。</li>
+</ul>
+<h4 id="举例">举例</h4>
+<p>我们开发的一个应用，部署时静态资源存储的宿主机的<code>data</code>目录下，后台接口都是以<code>/api/</code>为前缀，当发来动态请求时由<code>location</code>拦截反向代理给<code>http://192.168.122.128:8080</code>处理。当发来静态资源请求时，从宿主机获取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">http<span class="o">{</span>
+  
+  server<span class="o">{</span>
+  	listen	80<span class="p">;</span>
+  	server_name localhost<span class="p">;</span>
+  <span class="o">}</span>
+  
+  location /api/ <span class="o">{</span>
+  	proxy_pass	http://192.168.122.128:8080<span class="p">;</span>
+  <span class="o">}</span>
+
+<span class="c1"># 文件浏览器配置</span>
+<span class="c1">#  location / {</span>
+<span class="c1">#  	root	/;</span>
+<span class="c1">#  	autoindex	on; #目录索引页</span>
+<span class="c1">#  }</span>
+  
+  location ~ .*<span class="se">\.</span><span class="o">(</span>gif<span class="p">|</span>jpg<span class="p">|</span>jpeg<span class="p">|</span>bmp<span class="p">|</span>png<span class="p">|</span>ico<span class="p">|</span>txt<span class="p">|</span>js<span class="p">|</span>css<span class="o">)</span>$ <span class="o">{</span> 
+            root /data/<span class="p">;</span> <span class="c1">#宿主机静态资源目录 也可以反向代理到静态资源服务器获取</span>
+            expires      3d<span class="p">;</span> <span class="c1"># 缓存3天 </span>
+        <span class="o">}</span> 
+  
+<span class="o">}</span> 
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="44-高可用集群">4.4 高可用集群</h3>
+<blockquote>
+<p>注意：本案例只是虚拟机内网测试，不适用于公网测试。</p>
+</blockquote>
+<h4 id="什么是高可用集群">什么是高可用集群？</h4>
+<p>高可用(High Availability)简称HA，即通过<strong>设计减少系统不能提供服务的时间</strong>(即宕机后最短时间内提供服务)，集群是多台机器一起工作。通俗的讲：高可用集群就是宕机了能在短时间内继续提供服务的一个多台机器组成的系统。</p>
+<p>Nginx配置高可用集群有两种配置方案</p>
+<ul>
+<li>
+<p>keepalived+nginx 主从配置</p>
+<p>这种方案，使用一个vip（虚拟IP）地址，2台服务器，一台做主，一台做备，但同时只有一台机器工作，另一台备份机器在主机器不出现故障的时候，永远处于浪费状态，对于服务器不多的网站，该方案不经济实惠。</p>
+</li>
+<li>
+<p>keepalived+nginx 双主配置</p>
+<p>这种方案，使用两个vip地址，2台服务器，互为主备，同时有两台机器工作，当其中一台机器出现故障，两台机器的请求转移到一台机器负担。</p>
+</li>
+</ul>
+<h4 id="环境准备">环境准备</h4>
+<p>准备两台服务器（这里以CentOs 7.X为例）。</p>
+<blockquote>
+<p>这里只是举例Nginx配置，没有其他的反向代理配置（tomcat等服务器）。</p>
+</blockquote>
+<h5 id="1安装nginx">1.安装Nginx</h5>
+<h5 id="建议看这篇文章httpsblogcsdnnetqq_41262903articledetails106072890"><a href="https://blog.csdn.net/qq_41262903/article/details/106072890">建议看这篇文章</a></h5>
+<h5 id="2安装keepalived">2.安装Keepalived</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">yum install keepalived –y
+</code></pre></td></tr></table>
+</div>
+</div><p>安装之后在<code>/etc/</code>目录下多个一个<code>keepalived</code>目录，keepalived目录下的<code>keepalived.conf</code>为其配置文件。</p>
+<blockquote>
+<p>Keepalived的作用为激活虚拟IP，使客户端能够通过虚拟IP访问到对应服务。</p>
+</blockquote>
+<h5 id="3编写nginx检测脚本两台机器">3.编写nginx检测脚本（两台机器）</h5>
+<p><code>vim /etc/keepalived/nginx_check.sh</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="nv">A</span><span class="o">=</span><span class="sb">`</span>ps -C nginx --no-header <span class="p">|</span> wc -l<span class="sb">`</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$A</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+    /www/server/nginx/sbin <span class="c1">#尝试重新启动nginx</span>
+    sleep <span class="m">2</span>  <span class="c1">#睡眠2秒</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>ps -C nginx --no-header <span class="p">|</span> wc -l<span class="sb">`</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+        killall keepalived <span class="c1">#启动失败，将keepalived服务杀死。将vip漂移到其它备份节点</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>添加可执行权限<code>chmod +x /etc/keepalived/nginx_check.sh</code></p>
+<h4 id="主从配置">主从配置</h4>
+<p>主机<code>keepalived</code>配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">global_defs <span class="o">{</span>
+<span class="c1"># 收件人</span>
+<span class="c1">#	notification_email {</span>
+<span class="c1">#     acassen@firewall.loc</span>
+<span class="c1">#     failover@firewall.loc</span>
+<span class="c1">#     sysadmin@firewall.loc</span>
+<span class="c1">#   }</span>
+<span class="c1">#   发件人</span>
+<span class="c1">#   notification_email_from Alexandre.Cassen@firewall.loc</span>
+<span class="c1">#   发邮件服务器</span>
+<span class="c1">#		smtp_server 192.168.200.1</span>
+<span class="c1">#   超时时间</span>
+<span class="c1">#   smtp_connect_timeout 30</span>
+	router_id LVS_DEVEL01  <span class="c1"># 局域网keppalived主机身份标识信息(每台唯一)</span>
+<span class="o">}</span>
+
+
+<span class="c1"># 集群资源监控，组合track_script进行 </span>
+vrrp_script chk_nginx <span class="o">{</span>
+       script <span class="s2">&#34;/etc/keepalived/nginx_check.sh&#34;</span>
+       interval <span class="m">2</span>  <span class="c1">#每2秒检测一次nginx的运行状态</span>
+       weight -20  <span class="c1">#失败一次，将自己的优先级-20</span>
+<span class="o">}</span>
+
+vrrp_instance VI_1 <span class="o">{</span>
+	state MASTER <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">51</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">100</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.50 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>备用机<code>keepalived</code>配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">global_defs <span class="o">{</span>
+<span class="c1"># 收件人</span>
+<span class="c1">#	notification_email {</span>
+<span class="c1">#     acassen@firewall.loc</span>
+<span class="c1">#     failover@firewall.loc</span>
+<span class="c1">#     sysadmin@firewall.loc</span>
+<span class="c1">#   }</span>
+<span class="c1">#   发件人</span>
+<span class="c1">#   notification_email_from Alexandre.Cassen@firewall.loc</span>
+<span class="c1">#   发邮件服务器</span>
+<span class="c1">#		smtp_server 192.168.200.1</span>
+<span class="c1">#   超时时间</span>
+<span class="c1">#   smtp_connect_timeout 30</span>
+	router_id LVS_DEVEL02  <span class="c1"># 局域网keppalived主机身份标识信息(每台唯一)</span>
+<span class="o">}</span>
+
+
+<span class="c1"># 集群资源监控，组合track_script进行 </span>
+vrrp_script chk_nginx <span class="o">{</span>
+       script <span class="s2">&#34;/etc/keepalived/nginx_check.sh&#34;</span>
+       interval <span class="m">2</span>  <span class="c1">#每2秒检测一次nginx的运行状态</span>
+       weight -20  <span class="c1">#失败一次，将自己的优先级-20</span>
+<span class="o">}</span>
+
+vrrp_instance VI_1 <span class="o">{</span>
+	state BACKUP <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">51</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">90</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.50 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>测试</strong>：</p>
+<p>启动两台机器的<code>nginx</code>和<code>keepalived</code>服务</p>
+<p>启动nginx：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">nginx
+</code></pre></td></tr></table>
+</div>
+</div><p>启动keepalived</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">systemctl start keepalived.service
+</code></pre></td></tr></table>
+</div>
+</div><p>查看keepalived是否启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ps -ef <span class="p">|</span> grep keepalived
+</code></pre></td></tr></table>
+</div>
+</div><p>查看主机虚拟IP绑定情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ip addr
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://img-blog.csdnimg.cn/img_convert/48cd1a4f240a9a13079b512f4801481d.png" alt="image-20210109122534370"></p>
+<p>通过虚拟IP访问</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ed282e0854bcfbaf9a886c787b7073b4.png" alt="image-20210109122717648"></p>
+<p>模拟主机nginx宕机（杀掉keepalived服务，杀掉nginx是不行的,因为keepalived对应检测脚本检测到Nginx死了会尝试重启）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">systemctl stop keepalived.service
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候通过虚拟IP访问可以看到已经切换到从机</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/072951f3df9ce04f577c1e13f99c81e5.png" alt="image-20210109123310438"></p>
+<h4 id="双主配置">双主配置</h4>
+<p>第一台机器:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">global_defs <span class="o">{</span>
+<span class="c1"># 收件人</span>
+<span class="c1">#	notification_email {</span>
+<span class="c1">#     acassen@firewall.loc</span>
+<span class="c1">#     failover@firewall.loc</span>
+<span class="c1">#     sysadmin@firewall.loc</span>
+<span class="c1">#   }</span>
+<span class="c1">#   发件人</span>
+<span class="c1">#   notification_email_from Alexandre.Cassen@firewall.loc</span>
+<span class="c1">#   发邮件服务器</span>
+<span class="c1">#		smtp_server 192.168.200.1</span>
+<span class="c1">#   超时时间</span>
+<span class="c1">#   smtp_connect_timeout 30</span>
+	router_id LVS_DEVEL01  <span class="c1"># 局域网keppalived主机身份标识信息(每台唯一)</span>
+<span class="o">}</span>
+
+
+<span class="c1"># 集群资源监控，组合track_script进行 </span>
+vrrp_script chk_nginx <span class="o">{</span>
+       script <span class="s2">&#34;/etc/keepalived/nginx_check.sh&#34;</span>
+       interval <span class="m">2</span>  <span class="c1">#每2秒检测一次nginx的运行状态</span>
+       weight -20  <span class="c1">#失败一次，将自己的优先级-20</span>
+<span class="o">}</span>
+
+vrrp_instance VI_1 <span class="o">{</span>
+	state MASTER <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">51</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">100</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.50 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+
+vrrp_instance VI_1 <span class="o">{</span>
+	state BACKUP <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">52</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">90</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.51 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>第二台机器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">global_defs <span class="o">{</span>
+<span class="c1"># 收件人</span>
+<span class="c1">#	notification_email {</span>
+<span class="c1">#     acassen@firewall.loc</span>
+<span class="c1">#     failover@firewall.loc</span>
+<span class="c1">#     sysadmin@firewall.loc</span>
+<span class="c1">#   }</span>
+<span class="c1">#   发件人</span>
+<span class="c1">#   notification_email_from Alexandre.Cassen@firewall.loc</span>
+<span class="c1">#   发邮件服务器</span>
+<span class="c1">#		smtp_server 192.168.200.1</span>
+<span class="c1">#   超时时间</span>
+<span class="c1">#   smtp_connect_timeout 30</span>
+	router_id LVS_DEVEL02  <span class="c1"># 局域网keppalived主机身份标识信息(每台唯一)</span>
+<span class="o">}</span>
+
+
+<span class="c1"># 集群资源监控，组合track_script进行 </span>
+vrrp_script chk_nginx <span class="o">{</span>
+       script <span class="s2">&#34;/etc/keepalived/nginx_check.sh&#34;</span>
+       interval <span class="m">2</span>  <span class="c1">#每2秒检测一次nginx的运行状态</span>
+       weight -20  <span class="c1">#失败一次，将自己的优先级-20</span>
+<span class="o">}</span>
+
+vrrp_instance VI_1 <span class="o">{</span>
+	state BACKUP <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">51</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">90</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.50 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+
+vrrp_instance VI_2 <span class="o">{</span>
+	state MASTER <span class="c1"># 备份服务器上将 MASTER 改为 BACKUP </span>
+	interface eth0 <span class="c1"># 网卡</span>
+	virtual_router_id <span class="m">52</span> <span class="c1"># 主、备机的 virtual_router_id 必须相同</span>
+	priority <span class="m">100</span> <span class="c1"># 主、备机取不同的优先级，主机值较大，备份机值较小</span>
+	advert_int <span class="m">1</span>
+<span class="c1"># 设置高可用集群中不抢占功能，在主机down后，从机接管，当主机重新恢复后，主机不抢占备用机</span>
+<span class="c1">#	nopreempt </span>
+	authentication <span class="o">{</span>
+		auth_type PASS
+		auth_pass <span class="m">1111</span>
+	<span class="o">}</span>
+
+<span class="c1"># 集群资源监控，组合vrrp_script进行  </span>
+  track_script <span class="o">{</span>  
+    chk_nginx  
+  <span class="o">}</span>	
+	virtual_ipaddress <span class="o">{</span>
+		10.211.55.51 // VRRP H 虚拟地址
+	<span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>测试：</strong></p>
+<p>重新启动两台机器的<code>keepalived服务</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">systemctl restart keepalived.service
+</code></pre></td></tr></table>
+</div>
+</div><p>在两台机器上都可以通过<code>ip addr</code>看到绑定的对应虚拟IP地址</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/53eddf2c067c518e9808142ccbbca44c.png" alt="image-20210109125427900"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/fb446dfbc3e97b0ba488c4ace11f7949.png" alt="image-20210109125503290"></p>
+<p>通过虚拟IP访问：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/4dd2c27c3b3487da34fa084a9f9dde0a.png" alt="image-20210109125713832"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/64dcf788ec43258da2c2a221db1594df.png" alt="image-20210109125741946"></p>
+<p>当一台服务的nginx挂掉之后两个虚拟IP访问都会到同一台机器。</p>
+</div>
+        
+            <div class="article-licensing box">
+    <div class="licensing-title">
+        <p>Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</p>
+        <p><a href="https://blog.dpf114.top/posts/nginx-config/">https://blog.dpf114.top/posts/nginx-config/</a></p>
+    </div>
+    <div class="licensing-meta level is-mobile">
+        <div class="level-left">
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>作者</h6>
+                        <p>pikachues</p>
+                    </div>
+                </div>
+            
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>发布于</h6>
+                        <p>2020-12-22</p>
+                    </div>
+                </div>
+            
+            
+                <div class="level-item is-narrow">
+                    <div>
+                        <h6>更新于</h6>
+                        <p>2020-12-22</p>
+                    </div>
+                </div>
+            
+            <div class="level-item is-narrow">
+                <div>
+                    <h6>许可协议</h6>
+                    <p>
+                        
+                            <a class="" title="CC BY-NC 4.0" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
+                                CC BY-NC 4.0
+                            </a>
+                        
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+        
+            <div class="article-tags size-small mb-4">
+                <span class="mr-2">#</span><a class="link-muted mr-2" href="/tags/Nginx" rel="tag">Nginx</a></div>
+        
+        
+
+    </article>
+</div>
+
+
+    <div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+                
+
+    <a class="button donate" data-type="alipay">
+        <span class="icon is-small">
+            <i class="fab fa-alipay"></i>
+        </span>
+        <span>支付宝</span>
+        <span class="qrcode">
+            <img src="/img/alipay.png" alt="支付宝">
+        </span>
+    </a>
+
+
+                
+            
+                
+                
+
+    <a class="button donate" data-type="wechat">
+        <span class="icon is-small">
+            <i class="fab fa-weixin"></i>
+        </span>
+        <span>微信</span>
+        <span class="qrcode">
+            <img src="/img/wechat.png" alt="微信">
+        </span>
+    </a>
+
+
+                
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+    <nav class="post-navigation mt-4 level is-mobile">
+        
+            <div class="level-start">
+                <a class="article-nav-prev level level-item link-muted" href="https://blog.dpf114.top/posts/git-often-used/">
+                    <i class="level-item fas fa-chevron-left"></i>
+                    <span class="level-item">Git非官方使用总结</span>
+                </a>
+            </div>
+        
+        
+            <div class="level-end">
+                <a class="article-nav-next level level-item link-muted" href="https://blog.dpf114.top/posts/%E4%B8%8Ehttp%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BB%84%E4%BB%B6/">
+                    <span class="level-item">与HTTP相关的组件</span>
+                    <i class="level-item fas fa-chevron-right"></i>
+                </a>
+            </div>
+        
+    </nav>
+
+
+
+    <div class="card">
+    <div class="card-content">
+        <h3 class="title is-5">评论</h3>
+        
+        
+
+
+    
+    <div id="valine-thread" class="content"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js"></script>
+    <script>
+        new Valine({
+          el: '#valine-thread',
+          app_id: "GeG3Ob5TvK8CJKXmJI8hc7fA-MdYXbMMI",
+          app_key: "ePVOGzkm0LD03BtB3UM4pbEp",
+          placeholder: "发表你的意见，让我们一起交流，共同提高...(填写昵称和邮箱回复有提醒哟)",
+          avatar: "mm",
+          avatarForce:  false ,
+          meta: "[\"nick\",\"mail\",\"link\"]",
+          pageSize:  10 ,
+          lang: "zh-CN",
+          visitor:  false ,
+          highlight:  true ,
+          recordIP:  false ,
+          serverURLs: "",
+          emojiCDN: "",
+          emojiMaps:  null ,
+          enableQQ:  false ,
+          requiredFields: "[]",
+        });
+    </script>
+
+
+        
+    </div>
+</div>
+
+
+
+
+            </div>
+            
+
+    <div class="column column-left is-4-tablet is-4-desktop is-3-widescreen order-1 is-sticky">
+        
+            
+            
+                
+                
+<div class="card widget" data-type="profile">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered flex-shrink-1">
+                <div>
+                    <figure class="image is-128x128 mx-auto mb-2">
+                        <img class="avatar is-rounded"
+                             src="/img/pikachues.jpg"
+                             alt="Pikachues">
+                    </figure>
+                    <p class="title is-size-4 is-block" style="line-height: inherit">Pikachues</p>
+                    <p class="is-size-6 is-block">Better Luck Tomorrow</p>
+                    
+                        <p class="is-size-6 is-flex justify-content-center">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>China</span>
+                        </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">文章</p>
+                    <a href="/archives"><p class="title">19</p></a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">分类</p>
+                    <a href="/categories"><p class="title">7</p></a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">标签</p>
+                    <a href="/tags"><p class="title">11</p></a>
+                </div>
+            </div>
+        </nav>
+        
+            <div class="level">
+                <a class="level-item button is-primary is-rounded" href="https://github.com/xiaoxiaoshou"
+                   target="_blank" rel="noopener">关注我</a>
+            </div>
+        
+        <div class="level is-mobile">
+            
+                <a class="level-item button is-transparent is-marginless" title="Mail" href="mailto:446933040@qq.com"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            
+                <a class="level-item button is-transparent is-marginless" title="RSS" href="/index.xml"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-rss"></i>
+                </a>
+            
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+    <div class="card widget" id="toc" data-type="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">目录</h3>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1nginx是什么">1.Nginx是什么</a></li>
+        <li><a href="#2安装">2.安装</a>
+          <ul>
+            <li><a href="#windows">Windows</a></li>
+            <li><a href="#linux">Linux</a></li>
+            <li><a href="#mac">Mac</a></li>
+          </ul>
+        </li>
+        <li><a href="#3配置文件详解">3.配置文件详解</a></li>
+        <li><a href="#4常用配置">4.常用配置</a>
+          <ul>
+            <li><a href="#41反向代理">4.1.反向代理</a></li>
+            <li><a href="#42-负载均衡">4.2 负载均衡</a>
+              <ul>
+                <li><a href="#什么是负载均衡">什么是负载均衡？</a></li>
+                <li><a href="#配置举例">配置举例</a></li>
+                <li><a href="#nginx实现负载均衡的几种策略">Nginx实现负载均衡的几种策略</a></li>
+              </ul>
+            </li>
+            <li><a href="#43-动静分离">4.3 动静分离</a>
+              <ul>
+                <li><a href="#什么是动静分离">什么是动静分离？</a></li>
+                <li><a href="#举例">举例</a></li>
+              </ul>
+            </li>
+            <li><a href="#44-高可用集群">4.4 高可用集群</a>
+              <ul>
+                <li><a href="#什么是高可用集群">什么是高可用集群？</a></li>
+                <li><a href="#环境准备">环境准备</a>
+                  <ul>
+                    <li><a href="#1安装nginx">1.安装Nginx</a></li>
+                    <li><a href="#建议看这篇文章httpsblogcsdnnetqq_41262903articledetails106072890"><a href="https://blog.csdn.net/qq_41262903/article/details/106072890">建议看这篇文章</a></a></li>
+                    <li><a href="#2安装keepalived">2.安装Keepalived</a></li>
+                    <li><a href="#3编写nginx检测脚本两台机器">3.编写nginx检测脚本（两台机器）</a></li>
+                  </ul>
+                </li>
+                <li><a href="#主从配置">主从配置</a></li>
+                <li><a href="#双主配置">双主配置</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+            </div>
+        </div>
+        <style>
+        .menu-list > li > a.is-active + .menu-list {display: block;}
+        .menu-list > li > a + .menu-list {display: none;}
+        </style>
+        <script type="text/javascript" src="/js/toc.js" defer></script>
+    </div>
+
+
+                
+            
+        
+            
+            
+                
+                <div class="card widget" data-type="categories">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">分类</h3>
+            <ul class="menu-list">
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/git/">
+                            <span class="level-start">
+                                <span class="level-item">git</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/http%e5%8d%8f%e8%ae%ae/">
+                            <span class="level-start">
+                                <span class="level-item">http协议</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">13</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/linux/">
+                            <span class="level-start">
+                                <span class="level-item">linux</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/nginx/">
+                            <span class="level-start">
+                                <span class="level-item">nginx</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/python/">
+                            <span class="level-start">
+                                <span class="level-item">python</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/ssm/">
+                            <span class="level-start">
+                                <span class="level-item">ssm</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="/categories/%e7%bd%91%e7%bb%9c/">
+                            <span class="level-start">
+                                <span class="level-item">网络</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+                
+            
+        
+            
+            
+                
+                <div class="card widget" data-type="tags">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">标签</h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/git/">
+                            <span class="tag">git</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/http/">
+                            <span class="tag">http</span>
+                            <span class="tag">11</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/https/">
+                            <span class="tag">https</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/htts/">
+                            <span class="tag">htts</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/jwt/">
+                            <span class="tag">jwt</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/linux/">
+                            <span class="tag">linux</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/nginx/">
+                            <span class="tag">nginx</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/python%e5%9f%ba%e7%a1%80/">
+                            <span class="tag">python基础</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/springmvc/">
+                            <span class="tag">springmvc</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/%e4%b8%b4%e6%97%b6cookies/">
+                            <span class="tag">临时cookies</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+                    <div class="control">
+                        <a class="tags has-addons" href="/tags/%e5%b1%80%e5%9f%9f%e7%bd%91/">
+                            <span class="tag">局域网</span>
+                            <span class="tag">1</span>
+                        </a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="recent-posts">
+    <div class="card-content">
+        <h3 class="menu-label">最新文章</h3>
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-12-22T17:20:56&#43;08:00'>2020-12-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/nginx-config/">Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</a></p>
+        <p class="categories"><a href="/categories/Nginx">Nginx</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-12-22T17:20:56&#43;08:00'>2020-12-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/git-often-used/">Git非官方使用总结</a></p>
+        <p class="categories"><a href="/categories/Git">Git</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-11-22T17:20:56&#43;08:00'>2020-11-22</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/linux-often/">自用Linux常用命令</a></p>
+        <p class="categories"><a href="/categories/Linux">Linux</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-08-25T22:14:55&#43;08:00'>2020-08-25</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/%E4%B8%8Ehttp%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BB%84%E4%BB%B6/">与HTTP相关的组件</a></p>
+        <p class="categories"><a href="/categories/HTTP%e5%8d%8f%e8%ae%ae">HTTP协议</a></p>
+    </div>
+</article>
+
+        
+            <article class="media">
+    
+    <div class="media-content">
+        <p class="date"><time datetime='2020-08-23T22:14:55&#43;08:00'>2020-08-23</time></p>
+        <p class="title"><a href="https://blog.dpf114.top/posts/jwt%E5%92%8Csession-cookies%E4%B8%B4%E6%97%B6cookies/">jwt和Session cookies（临时cookies）</a></p>
+        <p class="categories"><a href="/categories/HTTP%e5%8d%8f%e8%ae%ae">HTTP协议</a></p>
+    </div>
+</article>
+
+        
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="archives">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">归档</h3>
+            <ul class="menu-list">
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-12">
+                            <span class="level-start">
+                                <span class="level-item">2020年 12月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">2</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-11">
+                            <span class="level-start">
+                                <span class="level-item">2020年 11月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">1</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-08">
+                            <span class="level-start">
+                                <span class="level-item">2020年 8月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">13</span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                    <li>
+                        <a class="level is-mobile" href="/archives/#2020-03">
+                            <span class="level-start">
+                                <span class="level-item">2020年 3月</span>
+                            </span>
+                            <span class="level-end">
+                                <span class="level-item tag">3</span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+                
+                
+<div class="card widget" data-type="links">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">链接</h3>
+            <ul class="menu-list">
+                
+                    <li>
+                        <a class="level is-mobile" href="https://gohugo.io" target="_blank" rel="noopener">
+                            <span class="level-left"><span class="level-item">Hugo</span></span>
+                            <span class="level-right">
+                                <span class="level-item tag">
+                                    gohugo.io
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="level is-mobile" href="https://blog.csdn.net/qq_41262903" target="_blank" rel="noopener">
+                            <span class="level-left"><span class="level-item">CSDN</span></span>
+                            <span class="level-right">
+                                <span class="level-item tag">
+                                    blog.csdn.net
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+            
+        
+            
+            
+        
+            
+            
+        
+        
+            <div class="column-right-shadow is-hidden-widescreen "></div>
+        
+    </div>
+
+
+    <div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 ">
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+            
+            
+        
+    </div>
+
+
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start">
+                <a class="footer-logo is-block mb-2" href="/">
+                    
+                        eRunn&#39;s Blog
+                    
+                </a>
+                <p class="is-size-7">
+                    <span>&copy; 2020 - 2021 pikachues</span>&nbsp;&nbsp;Powered by <a href="https://github.com/gohugoio/hugo/releases/tag/v0.77.0" target="_blank" rel="noopener">Hugo 0.77.0</a>&nbsp;&&nbsp;<a href="https://github.com/iMaple/hugo-theme-icarus/" target="_blank" rel="noopener">Icarus</a>
+
+                    <br/>
+                    <span>
+                        <img style="width: 60px;height: 21px;" src="https://cdn.jsdelivr.net/gh/xiaoxiaoshou/staticResouce/img/ypy_logo5.png">
+                        <a href="https://console.upyun.com/register/?invite=rknj9xrGD">提供加速服务</a>
+                    </span>
+                    <br/>
+                    <span>
+                        <img src="https://cdn.jsdelivr.net/gh/xiaoxiaoshou/staticResouce/img/icp.png" alt="">
+                        <a href="https://beian.miit.gov.cn/">湘ICP备2020018013号</a>
+                    </span>
+                </p>
+            </div>
+            <div class="level-end">
+                <div class="field has-addons">
+                    
+                        <p class="control">
+                            <a class="button is-transparent is-large" title="Creative Commons" href="https://creativecommons.org/" target="_blank" rel="noopener">
+                                <i class="fab fa-creative-commons"></i>
+                            </a>
+                        </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script>moment.locale("zh-cn");</script>
+
+<script>
+    var IcarusThemeSettings = {
+      article: {
+        highlight: {
+          clipboard:  true ,
+          fold: "unfolded"
+        }
+      },
+      toc: {
+        index:  true 
+      }
+    };
+</script>
+
+<script type="text/javascript" src="/js/column.js"></script>
+
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="/js/animation.js"></script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <a id="back-to-top" title="回到顶端" href="javascript:;">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+    <script type="text/javascript" src="/js/back2top.js" defer></script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
+    <script>
+    window.addEventListener('load', () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static:  false ,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: '#edeff5',
+            text: '#838391'
+          },
+          button: {
+            background: '#4b81e8'
+          },
+        },
+      });
+    });
+    </script>
+
+
+        
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+      'HTML-CSS': {matchFontHeight: false},
+      SVG: {matchFontHeight: false},
+      CommonHTML: {matchFontHeight: false},
+      tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+    <div id="outdated">
+        <h6>Your browser is out-of-date!</h6>
+        <p>Update your browser to view this website correctly.&nbsp;
+            <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a>
+        </p>
+        <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js" defer></script>
+    <script>
+        window.addEventListener('load', function () {
+          outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'object-fit'
+          });
+        });
+    </script>
+
+
+        
+    
+
+    
+    
+        
+        
+        
+        
+
+
+
+        
+    
+
+    
+    
+
+    
+    
+        
+        
+        
+        
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js" async></script>
+
+
+        
+    
+
+    
+    
+
+
+<script type="text/javascript" src="/js/main.js" defer></script>
+
+
+    
+    <div class="searchbox">
+    <div class="searchbox-container">
+        <div class="searchbox-header">
+            <div class="searchbox-input-container">
+                <input class="searchbox-input" type="text" placeholder="想要查找什么..."/>
+            </div>
+            <a class="searchbox-close" href="javascript:;">×</a>
+        </div>
+        <div class="searchbox-body"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/insight.js" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      loadInsight(
+        {contentUrl: '/index.json'},
+        {
+          hint: "想要查找什么...",
+          untitled: "(无标题)",
+          posts: "文章",
+          pages: "页面",
+          categories: "分类",
+          tags: "标签"
+        }
+      );
+    });
+</script>
+
+    
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on eRunn&#39;s Blog</title>
+    <link>https://blog.dpf114.top/tags/nginx/</link>
+    <description>Recent content in Nginx on eRunn&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>446933040@qq.com (pikachues)</managingEditor>
+    <webMaster>446933040@qq.com (pikachues)</webMaster>
+    <lastBuildDate>Tue, 22 Dec 2020 17:20:56 +0800</lastBuildDate><atom:link href="https://blog.dpf114.top/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nginx常用配置（反向代理、负载均衡、动静分离、高可用集群）</title>
+      <link>https://blog.dpf114.top/posts/nginx-config/</link>
+      <pubDate>Tue, 22 Dec 2020 17:20:56 +0800</pubDate>
+      <author>446933040@qq.com (pikachues)</author>
+      <guid>https://blog.dpf114.top/posts/nginx-config/</guid>
+      <description>1.Nginx是什么 Nginx是一个高性能的Web和反向代理服务器。作为web服务器它与我们常用的web应用服务器（tomcat、jetty</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -389,7 +389,7 @@ th:not([align]) {
 }
 html {
   background-color: #f7f7f7;
-  font-size: 14px;
+  font-size: 15px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   min-width: 300px;
@@ -5299,8 +5299,8 @@ fieldset[disabled] .button {
   margin-bottom: 1em;
 }
 .content blockquote {
-  background-color: #f5f5f5;
-  border-left: 5px solid #dbdbdb;
+  background-color: #ebf8f2;
+  border-left: 5px solid #42b983;
   padding: 1.25em 1.5em;
 }
 .content ol {
