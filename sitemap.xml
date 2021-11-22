@@ -297,6 +297,27 @@
     </url>
     
     <url>
+        <loc>https://blog.dpf114.top/posts/hello/</loc>
+        <lastmod>2020-02-03T22:14:55+08:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://blog.dpf114.top/tags/hello/</loc>
+        <lastmod>2020-02-03T22:14:55+08:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://blog.dpf114.top/categories/hello/</loc>
+        <lastmod>2020-02-03T22:14:55+08:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
         <loc>https://blog.dpf114.top/about/</loc>
         <lastmod>2020-01-01T00:00:00+08:00</lastmod>
         <changefreq>weekly</changefreq>

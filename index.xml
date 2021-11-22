@@ -189,5 +189,14 @@
       <description>前言 最近学习微信公众号，微信公众号测试时需要内网穿透，开始时使用ngrock(第一天用的挺稳)，第二天连接ngrock时发现总是不能连接，于</description>
     </item>
     
+    <item>
+      <title>Hello</title>
+      <link>https://blog.dpf114.top/posts/hello/</link>
+      <pubDate>Mon, 03 Feb 2020 22:14:55 +0800</pubDate>
+      <author>446933040@qq.com (pikachues)</author>
+      <guid>https://blog.dpf114.top/posts/hello/</guid>
+      <description>常用命令 1 2 3 4 5 # 新建文章 hugo new /post xxx.md # 编译运行 hugo server 文章头 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 title: &amp;#34;标题&amp;#34; author: &amp;#34;</description>
+    </item>
+    
   </channel>
 </rss>
